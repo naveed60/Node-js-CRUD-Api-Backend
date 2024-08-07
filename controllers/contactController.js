@@ -1,35 +1,41 @@
+const asyncHandler = require("express-async-handler");
+
 // get all contacts
 //routes GET /api/contacts
-const getContacts = (req, res) => {
- res.status(200).json({message: "Get all contacts"});
-};
+const getContacts = asyncHandler(async (req, res) => {
+    res.status(200).json({ message: "Get all contacts" });
+});
 
-// get  contact by id
-const getContact = (req, res) => {
- res.status(200).json({message: `Get contact for ${req.params.id}`})};
- 
-// Create contact api
-const createContact = (req, res) => {
-    console.log("req.body",req.body)
- res.status(200).json({message:"Create contacts"})
-};
+// get contact by id
+const getContact = asyncHandler(async (req, res) => {
+    res.status(200).json({ message: `Get contact for ${req.params.id}` });
+});
 
 // Create contact api
-const updateContact = ((req, res) => {
- res.status(200).json({message:`Update contact for ${req.params.id}`})
+const createContact = asyncHandler(async (req, res) => {
+    console.log("req.body", req.body);
+    const { name, email, phone } = req.body;
+    if (!name || !email || !phone) {
+        res.status(400);
+        throw new Error("All fields are mandatory");
+    }
+    res.status(200).json({ message: "Create contacts" });
+});
+
+// Update contact api
+const updateContact = asyncHandler(async (req, res) => {
+    res.status(200).json({ message: `Update contact for ${req.params.id}` });
 });
 
 // Delete contact api
-const deleteContact = ((req, res) => {
- res.status(200).json({message: `Delete contact for ${req.params.id}`})
+const deleteContact = asyncHandler(async (req, res) => {
+    res.status(200).json({ message: `Delete contact for ${req.params.id}` });
 });
 
-module.exports ={
-    getContacts, 
+module.exports = {
+    getContacts,
     getContact,
     createContact,
     updateContact,
-    deleteContact};
-
-
-
+    deleteContact
+};
