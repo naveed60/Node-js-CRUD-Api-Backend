@@ -32,6 +32,7 @@ const createContact = asyncHandler(async (req, res) => {
       email,
       phone
     });
+    console.log("contact created",contact);
     res.status(200).json(contact);
 });
 
@@ -53,6 +54,7 @@ const updateContact = asyncHandler(async (req, res) => {
 // Delete contact api
 const deleteContact = asyncHandler(async (req, res) => {
   const contact = await Contact.findById(req.params.id);
+  console.log("contacts",contact);
   if (!contact) {
     res.status(404);
     throw new Error("Contact not found");
