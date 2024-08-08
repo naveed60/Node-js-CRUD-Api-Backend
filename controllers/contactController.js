@@ -12,6 +12,7 @@ const getContacts = asyncHandler(async (req, res) => {
 // get contact by id
 const getContact = asyncHandler(async (req, res) => {
   const contact = await Contact.findById(req.params.id);
+  console.log("contact by id",contact)
   if(!contact){
     res.status(404);
     throw new Error("Contact not found");
