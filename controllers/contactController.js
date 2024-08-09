@@ -22,19 +22,19 @@ const getContact = asyncHandler(async (req, res) => {
 
 // Create contact api
 const createContact = asyncHandler(async (req, res) => {
-    console.log("req.body", req.body);
-    const { name, email, phone } = req.body;
-    if (!name || !email || !phone) {
-        res.status(400);
-        throw new Error("All fields are mandatory");
-    }
-    const contact = await Contact.create({
-      name,
-      email,
-      phone
-    });
-    console.log("contact created",contact);
-    res.status(200).json(contact);
+  console.log("req.body", req.body);
+  const { name, email, phone } = req.body;
+  if (!name || !email || !phone) {
+      res.status(400);
+      throw new Error("All fields are mandatory");
+  }
+  const contact = await Contact.create({
+    name,
+    email,
+    phone
+  });
+  console.log("contact created",contact);
+  res.status(200).json(contact);
 });
 
 // Update contact api
@@ -59,17 +59,16 @@ const deleteContact = asyncHandler(async (req, res) => {
   if (!contact) {
     res.status(404);
     throw new Error("Contact not found");
-  }
-
+  };
   await Contact.findByIdAndDelete(req.params.id);
   res.status(200).json({ message: "Contact deleted successfully" });
 });
 
 
 module.exports = {
-    getContacts,
-    getContact,
-    createContact,
-    updateContact,
-    deleteContact
+  getContacts,
+  getContact,
+  createContact,
+  updateContact,
+  deleteContact
 };
