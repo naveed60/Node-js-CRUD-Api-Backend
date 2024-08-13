@@ -43,6 +43,7 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Email and Password Required")
    }
    const  user = await User.findOne({email});
+   console.log(`user`,user)
    if(user && (await bcrypt.compare(password, user.password))){
     const accessToken = jwt.sign({
       user:{
