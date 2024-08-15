@@ -5,14 +5,12 @@ const Contact = require("../models/contactsModel")
 //routes GET /api/contacts
 const getContacts = asyncHandler(async (req, res) => {
   const contacts = await Contact.find({user_id: req.user.id});
-  console.log("contacts",contacts)
   res.status(200).json(contacts);
 });
 
 // get contact by id
 const getContact = asyncHandler(async (req, res) => {
   const contact = await Contact.findById(req.params.id);
-  console.log("contact by id",contact)
   if(!contact){
     res.status(404);
     throw new Error("Contact not found");
@@ -22,7 +20,6 @@ const getContact = asyncHandler(async (req, res) => {
 
 // Create contact api
 const createContact = asyncHandler(async (req, res) => {
-  console.log("req.body", req.body);
   const { name, email, phone } = req.body;
   if (!name || !email || !phone) {
       res.status(400);
@@ -61,7 +58,6 @@ const updateContact = asyncHandler(async (req, res) => {
 // Delete contact api
 const deleteContact = asyncHandler(async (req, res) => {
   const contact = await Contact.findById(req.params.id);
-  console.log("contacts",contact);
   if (!contact) {
     res.status(404);
     throw new Error("Contact not found");
