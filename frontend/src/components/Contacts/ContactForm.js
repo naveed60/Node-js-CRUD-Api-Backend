@@ -12,11 +12,12 @@ const ContactForm = () => {
   const [phone, setPhone] = useState("");
   const { contacts, setContacts } = useContext(ContactContext);
   const { user } = useContext(AuthContext);
+  console.log("user",user)
   const navigate = useNavigate();
   const { id } = useParams();
   
   useEffect(() => {
-    if (id) {
+    if (id && user) { // Check if user is not null
       // Fetch contact data for editing
       getContactById(id, user.token).then(response => {
         const { name, email, phone } = response.data;
@@ -25,7 +26,8 @@ const ContactForm = () => {
         setPhone(phone);
       }).catch(error => console.error("Failed to fetch contact", error));
     }
-  }, [id, user.token]);
+  }, [id, user]); // Add user as a dependency
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

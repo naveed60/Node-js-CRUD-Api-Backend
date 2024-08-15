@@ -1,80 +1,67 @@
-// src/components/Contacts/EditContact.js
+// src/components/Contacts/ContactDetail.js
 import React, { useState, useEffect, useContext } from "react";
-import { TextField, Button, Container, Typography, Box } from "@mui/material";
-import { useParams, useNavigate } from "react-router-dom";
-import { getContactById, updateContact } from "../../services/api";
+import { Container, Typography, Button, Box, CircularProgress } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
+import { getContactById } from "../../services/api";
 import { AuthContext } from "../../contexts/AuthContext";
-import { ContactContext } from "../../contexts/ContactContext";
 
-const EditContact = () => {
+const ContactDetail = () => {
+  const [contact, setContact] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { id } = useParams();
-  const { user } = useContext(AuthContext);
-  const { contacts, setContacts } = useContext(ContactContext);
-  const [contact, setContact] = useState({
-    name: "",
-    email: "",
-    phone: "",
-  });
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    getContactById(id, user.token)
-      .then(response => setContact(response.data))
-      .catch(error => console.error("Failed to fetch contact", error));
+    const fetchContact = async () => {
+      try {
+        const response = await getContactById(id, user.token);
+        setContact(response.data);
+      } catch (error) {
+        setError("Failed to fetch contact details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContact();
   }, [id, user.token]);
 
-  const handleChange = (e) => {
-    setContact({ ...contact, [e.target.name]: e.target.value });
-  };
+  if (loading) {
+    return (
+      <Container sx={{ mt: 8 }} align="center">
+        <CircularProgress />
+        <Typography>Loading contact details...</Typography>
+      </Container>
+    );
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await updateContact(id, contact, user.token);
-      const updatedContacts = contacts.map(c => (c._id === id ? contact : c));
-      setContacts(updatedContacts);
-      navigate("/contacts");
-    } catch (error) {
-      console.error("Failed to update contact", error);
-    }
-  };
+  if (error) {
+    return (
+      <Container sx={{ mt: 8 }} align="center">
+        <Typography color="error">{error}</Typography>
+      </Container>
+    );
+  }
 
   return (
-    <Container sx={{ mt: 12 }}>
-      <Typography variant="h4" gutterBottom>Edit Contact</Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Name"
-          name="name"
-          value={contact.name}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Email"
-          name="email"
-          value={contact.email}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Phone"
-          name="phone"
-          value={contact.phone}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <Box mt={2}>
-          <Button variant="contained" color="primary" type="submit">
-            Save Changes
-          </Button>
+    <Container sx={{ mt: 8 }}>
+      <Typography variant="h4" gutterBottom>Contact Details</Typography>
+      {contact && (
+        <Box>
+          <Typography variant="h6">Name: {contact.name}</Typography>
+          <Typography variant="h6">Email: {contact.email}</Typography>
+          <Typography variant="h6">Phone: {contact.phone}</Typography>
+          <Box mt={2}>
+            <Button variant="contained" color="primary" onClick={() => navigate(`/contacts/${contact._id}/edit`)}>
+              Edit Contact
+            </Button>
+          </Box>
         </Box>
-      </form>
+      )}
     </Container>
   );
 };
 
-export default EditContact;
+export default ContactDetail;
