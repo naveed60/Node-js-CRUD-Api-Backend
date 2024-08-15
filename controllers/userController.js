@@ -58,7 +58,6 @@ const loginUser = asyncHandler(async (req, res) => {
     },process.env.ACCESS_TOKEN_SECRET,
     {expiresIn:"24h"}
   );
-  console.log("accessToken",accessToken)
    console.log("login user",user);
     res.status(200).json({accessToken})
    }else {
@@ -67,11 +66,16 @@ const loginUser = asyncHandler(async (req, res) => {
    }
 });
 
-//  user info
-//routes GET /api//users/login
 const currentUser = asyncHandler(async (req, res) => {
-    res.json(req.user);
-    console.log("currentUser",req.user)
+  if (req.user) {
+    res.status(200).json({
+      id: req.user.id,
+      username: req.user.username,
+      email: req.user.email,
+    });
+  } else {
+    res.status(401).json({ message: "Not authorized, no user found" });
+  }
 });
 
 module.exports = {registerUser,loginUser,currentUser};
