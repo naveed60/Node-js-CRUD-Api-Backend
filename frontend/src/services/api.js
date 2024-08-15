@@ -1,7 +1,7 @@
 // src/services/api.js
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3600/api";
+const API_BASE_URL = "http://localhost:3400/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -26,8 +26,8 @@ api.interceptors.request.use(
 
 export const registerUser = (userData) => api.post("users/register", userData);
 export const loginUser = (userData) => api.post("users/login", userData);
-export const getCurrentUser = () => api.get("/current");
-export const getContacts = () => api.get("/contacts");
+export const getCurrentUser = () => api.get("users/current");
+export const getContacts = (userId) => api.get(`/contacts`);
 export const getContactById = (id) => api.get(`/contacts/${id}`);
 export const createContact = (contactData) => api.post("/contacts", contactData);
 export const updateContact = (id, contactData) => api.put(`/contacts/${id}`, contactData);
