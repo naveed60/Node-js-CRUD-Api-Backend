@@ -4,24 +4,26 @@ import { TextField, Button, Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext"; // Ensure this path is correct
 import { loginUser } from "../../services/api";
+import {  useParams } from "react-router-dom";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setUser } = useContext(AuthContext); // Ensure setUser is provided in AuthContext
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { id } = useParams();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await loginUser({ email, password });
-      const { accessToken, ...userData } = response.data; // Destructure to separate accessToken from other user data
-      console.log("userData",userData)
+      const response = await loginUser({ email, password , id});
+      const { accessToken, userData } = response.data; // Destructure to separate accessToken from other user data
+      console.log("userData", userData); // Log the full response data      console.log("data",data)
       localStorage.setItem("accessToken", accessToken); // Store token in localStorage
       localStorage.setItem("user", JSON.stringify(userData)); // Save user data to localStorage
-      console.log("accessToken",accessToken)
-
-      setUser(userData); // Update context state with user data
+      // setUser(user); // Update context state with user data
       navigate("/contacts"); // Redirect to contacts page
     } catch (error) {
       console.error("Login failed", error);
