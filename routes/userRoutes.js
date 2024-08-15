@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/current", validateToken, currentUser); // Corrected to GET request and fixed the path
+router.get("/current", validateToken, currentUser);
 
 module.exports = router;
