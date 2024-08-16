@@ -1,4 +1,3 @@
-// src/App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -11,14 +10,16 @@ import ContactDetail from "./components/Contacts/ContactDetail";
 import EditContact from "./components/Contacts/EditContact";
 import HomePage from "./components/pages/HomePage";
 import CurrentUser from "./components/Contacts/CurrentUser";
+import AppBar from "./components/pages/AppBar";  // Import the AppBar component
 
 function App() {
   return (
     <AuthProvider>
       <ContactProvider>
         <Router>
+        <AppBar />  
           <Routes>
-            <Route path="/" element={<HomePage/>} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/current" element={<CurrentUser />} />
             <Route path="/register" element={<Register />} />
