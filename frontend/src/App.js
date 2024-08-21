@@ -11,6 +11,7 @@ import EditContact from "./components/Contacts/EditContact";
 import HomePage from "./components/pages/HomePage";
 import CurrentUser from "./components/Contacts/CurrentUser";
 import AppBar from "./components/pages/AppBar";  // Import the AppBar component
+import About from "./components/pages/About";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/about" element={<About />} /> {/* Add About route */}
             <Route path="/current" element={<CurrentUser />} />
             <Route path="/register" element={<Register />} />
             <Route path="/contacts" element={<ContactList />} />
