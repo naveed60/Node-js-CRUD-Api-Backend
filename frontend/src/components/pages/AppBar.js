@@ -23,6 +23,18 @@ export default function ButtonAppBar() {
     }
   };
 
+  const handleAboutNavigation = () => {
+    navigate('/about'); // Navigate to the About page
+  };
+
+  const handleMyContactsNavigation = () => {
+    if (user) {
+      navigate('/contacts'); // Navigate to the Contacts page if the user is logged in
+    } else {
+      alert('Please log in to view your contact list.'); // Show an alert if the user is not logged in
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -36,11 +48,14 @@ export default function ButtonAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Button color="inherit" onClick={handleMyContactsNavigation} variant="h6" component="div">
             My Contacts
-          </Typography>
+          </Button>
+          <Button color="inherit" onClick={handleAboutNavigation}>
+            About
+          </Button>
           <Button color="inherit" onClick={handleAuthAction}>
-            {user ? 'Logout' : 'Login'} {/* Show "Login" or "Logout" based on the user's state */}
+            {user ? 'Logout' : 'Login'}
           </Button>
         </Toolbar>
       </AppBar>
